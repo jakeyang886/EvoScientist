@@ -40,6 +40,9 @@ dev = ["pytest>=8.0", "pytest-cov>=5.0"]
 
 [project.scripts]
 evoscientist = "EvoScientist.cli:main"
+EvoScientist = "EvoScientist.cli:main"
+evosci = "EvoScientist.cli:main"
+EvoSci = "EvoScientist.cli:main"
 
 [build-system]
 requires = ["setuptools>=68.0"]

@@ -82,7 +82,11 @@ You can perform inference directly from the command line using our CLI tool:
 ![demo](./assets/EvoScientist_cli.png)
 
 ```Shell
-python -m EvoScientist
+python -m EvoScientist 
+```
+or
+```Shell
+EvoSci # or EvoScientist
 ```
 **Optional arguments:**  
 
