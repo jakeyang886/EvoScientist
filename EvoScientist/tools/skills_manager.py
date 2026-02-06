@@ -9,7 +9,7 @@ Supported installation sources:
 - GitHub shorthand (owner/repo@skill-name)
 
 Usage:
-    from EvoScientist.skills_manager import install_skill, list_skills, uninstall_skill
+    from EvoScientist.tools.skills_manager import install_skill, list_skills, uninstall_skill
 
     # Install from local path
     install_skill("./my-skill")
@@ -37,7 +37,7 @@ from pathlib import Path
 
 import yaml
 
-from .paths import USER_SKILLS_DIR
+from ..paths import USER_SKILLS_DIR
 
 
 @dataclass
@@ -379,7 +379,7 @@ def list_skills(include_system: bool = False) -> list[SkillInfo]:
 
     # System skills (optional)
     if include_system:
-        from .EvoScientist import SKILLS_DIR
+        from ..EvoScientist import SKILLS_DIR
 
         system_dir = Path(SKILLS_DIR)
         if system_dir.exists():

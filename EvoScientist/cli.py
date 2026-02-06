@@ -231,7 +231,7 @@ def print_banner(
 
 def _cmd_list_skills() -> None:
     """List installed user skills."""
-    from .skills_manager import list_skills
+    from .tools.skills_manager import list_skills
     from .paths import USER_SKILLS_DIR
 
     skills = list_skills(include_system=False)
@@ -252,7 +252,7 @@ def _cmd_list_skills() -> None:
 
 def _cmd_install_skill(source: str) -> None:
     """Install a skill from local path or GitHub URL."""
-    from .skills_manager import install_skill
+    from .tools.skills_manager import install_skill
 
     if not source:
         console.print("[red]Usage:[/red] /install-skill <path-or-url>")
@@ -280,7 +280,7 @@ def _cmd_install_skill(source: str) -> None:
 
 def _cmd_uninstall_skill(name: str) -> None:
     """Uninstall a user-installed skill."""
-    from .skills_manager import uninstall_skill
+    from .tools.skills_manager import uninstall_skill
 
     if not name:
         console.print("[red]Usage:[/red] /uninstall-skill <skill-name>")

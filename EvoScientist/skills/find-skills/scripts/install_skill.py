@@ -24,7 +24,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from EvoScientist.skills_manager import install_skill, _parse_github_url
+from EvoScientist.tools.skills_manager import install_skill, _parse_github_url
 
 
 def _build_source(repo: str, ref: str | None, path: str | None) -> str:
