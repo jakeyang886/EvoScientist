@@ -1,0 +1,17 @@
+"""Middleware package for EvoScientist.
+
+Re-exports middleware classes and factory functions so that existing
+``from EvoScientist.middleware import X`` imports continue to work.
+"""
+
+from .memory import (
+    EvoMemoryMiddleware,
+    EvoMemoryState,
+    create_memory_middleware,
+)
+
+__all__ = [
+    "EvoMemoryMiddleware",
+    "EvoMemoryState",
+    "create_memory_middleware",
+]

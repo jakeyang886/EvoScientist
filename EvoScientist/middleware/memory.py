@@ -13,7 +13,7 @@ Two mechanisms:
 ## Usage
 
 ```python
-from EvoScientist.memory import EvoMemoryMiddleware
+from EvoScientist.middleware import EvoMemoryMiddleware
 
 middleware = EvoMemoryMiddleware(
     backend=my_backend,          # or backend factory
@@ -689,3 +689,45 @@ class EvoMemoryMiddleware(AgentMiddleware):
             self._last_extraction_at[thread_id] = human_count
 
         return state_update
+
+
+# ---------------------------------------------------------------------------
+# Factory
+# ---------------------------------------------------------------------------
+
+def create_memory_middleware(
+    memory_dir: str | None = None,
+    extraction_model: BaseChatModel | None = None,
+    trigger: tuple[str, int] = ("messages", 20),
+) -> EvoMemoryMiddleware:
+    """Create an EvoMemoryMiddleware for long-term memory.
+
+    Uses a FilesystemBackend rooted at ``memory_dir`` so that memory
+    persists across threads and sessions.
+
+    Args:
+        memory_dir: Path to the shared memory directory (not per-session).
+            Defaults to ``paths.MEMORY_DIR``.
+        extraction_model: Chat model for auto-extraction (optional; if None,
+            only prompt-guided manual memory updates via edit_file will work).
+        trigger: When to auto-extract. Default: every 20 human messages.
+
+    Returns:
+        Configured EvoMemoryMiddleware instance.
+    """
+    from deepagents.backends import FilesystemBackend
+    from ..paths import MEMORY_DIR as _DEFAULT_MEMORY_DIR
+
+    if memory_dir is None:
+        memory_dir = str(_DEFAULT_MEMORY_DIR)
+
+    memory_backend = FilesystemBackend(
+        root_dir=memory_dir,
+        virtual_mode=True,
+    )
+    return EvoMemoryMiddleware(
+        backend=memory_backend,
+        memory_path="/MEMORY.md",
+        extraction_model=extraction_model,
+        trigger=trigger,
+    )
