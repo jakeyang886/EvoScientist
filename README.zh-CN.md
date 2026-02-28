@@ -340,7 +340,7 @@ channel_enabled: "telegram,discord,slack"
                width="100" height="100"
                style="object-fit: cover; border-radius: 20%;" alt="Xi Zhang"/>
           <br />
-          <sub><b>Xi Zhang</b><sup>†</sup></sub>
+          <sub><b>Xi Zhang</b><sup>†§</sup></sub>
         </a>
       </td>
       <td align="center">
@@ -358,7 +358,7 @@ channel_enabled: "telegram,discord,slack"
                width="100" height="100"
                style="object-fit: cover; border-radius: 20%;" alt="Dinos Papakostas"/>
           <br />
-          <sub><b>Dinos Papakostas</b><sup>‡1</sup></sub>
+          <sub><b>Dinos Papakostas</b><sup>‡</sup></sub>
         </a>
       </td>
       <td align="center">
@@ -383,11 +383,11 @@ channel_enabled: "telegram,discord,slack"
   </tbody>
 </table>
 
-#### Collaborators
+#### Contributors
 
 Jan Piotrowski, Wiktor Cupiał, Yuyue Zhao, Xinhao Yi, Jakub Kaliski, Jakub Filipiuk, Shuyu Guo, Andreas Sauter, Jacopo Urbani, Zaiqiao Meng, Lun Zhou
 
-> <sup>†</sup>Project Lead & Engineering Lead <sup>‡</sup>Core Developer <sup>§</sup>Project Correspondent
+> <sup>†</sup>Project Lead & Engineering Lead <sup>‡</sup>Core Developer <sup>§</sup>Project Owner
 
 > *Xiaoyi DeepResearch Team* 及更广泛的开源社区共同为本项目做出贡献。
 
@@ -400,10 +400,6 @@ Jan Piotrowski, Wiktor Cupiał, Yuyue Zhao, Xinhao Yi, Jakub Kaliski, Jakub Fili
 <img align="right" alt="EvoScientist Team" src=".github/assets/EvoScientist_team.png" width="20%" />
 
 我们欢迎各层次的开发者和研究者参与贡献。请参阅 [贡献指南](./CONTRIBUTING.md) 开始参与，帮助 EvoScientist 变得更好。
-
-### ❤️ 感谢所有杰出的贡献者：
-
-[![EvoScientist contributors](https://contrib.rocks/image?repo=EvoScientist/EvoScientist)](https://github.com/EvoScientist/EvoScientist/graphs/contributors)
 
 ### 📈 Star 趋势
 

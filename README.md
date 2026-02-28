@@ -330,7 +330,7 @@ We thank the authors for their valuable contributions to the open-source communi
                width="100" height="100"
                style="object-fit: cover; border-radius: 20%;" alt="Xi Zhang"/>
           <br />
-          <sub><b>Xi Zhang</b><sup>†</sup></sub>
+          <sub><b>Xi Zhang</b><sup>†§</sup></sub>
         </a>
       </td>
       <td align="center">
@@ -348,7 +348,7 @@ We thank the authors for their valuable contributions to the open-source communi
                width="100" height="100"
                style="object-fit: cover; border-radius: 20%;" alt="Dinos Papakostas"/>
           <br />
-          <sub><b>Dinos Papakostas</b><sup>‡1</sup></sub>
+          <sub><b>Dinos Papakostas</b><sup>‡</sup></sub>
         </a>
       </td>
       <td align="center">
