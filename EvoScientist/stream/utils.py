@@ -111,7 +111,7 @@ def format_tool_compact(name: str, args: dict | None) -> str:
     """Format as compact tool call string: ToolName(key_arg).
 
     Adapted for deepagents tool names: execute, read_file, write_file,
-    edit_file, grep, glob, ls, write_todos, read_todos, task, load_skill,
+    edit_file, grep, glob, ls, write_todos, read_todos, task,
     tavily_search, think_tool.
     """
     if not args:
@@ -191,11 +191,6 @@ def format_tool_compact(name: str, args: dict | None) -> str:
                 task_desc = task_desc[:47] + "\u2026"
             return f"Cooking with sub-agent — {task_desc}"
         return "Cooking with sub-agent"
-
-    # Skills
-    if name_lower == "load_skill":
-        skill_name = args.get("skill_name", args.get("name", ""))
-        return f"load_skill({skill_name})"
 
     # Web search
     if name_lower in ("tavily_search", "internet_search"):

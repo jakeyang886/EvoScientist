@@ -59,7 +59,7 @@ def skill_manager(
                 f"Successfully installed skill: {result['name']}\n"
                 f"Description: {result.get('description', '(none)')}\n"
                 f"Path: {result['path']}\n\n"
-                f"Use load_skill to activate it."
+                f"Read its SKILL.md for full instructions."
             )
         else:
             return f"Failed to install skill: {result['error']}"

@@ -5,26 +5,46 @@ from langchain_core.tools import tool
 
 @tool(parse_docstring=True)
 def think_tool(reflection: str) -> str:
-    """Tool for strategic reflection on research progress and decision-making.
+    """Tool for structured reflection and strategic decision-making.
 
-    Use this tool after each search to analyze results and plan next steps systematically.
-    This creates a deliberate pause in the research workflow for quality decision-making.
+    Use this tool to pause and reason carefully at any decision point — not just
+    after searches, but before, during, and after any significant step. This creates
+    a deliberate checkpoint for quality thinking.
 
     When to use:
-    - After receiving search results: What key information did I find?
-    - Before deciding next steps: Do I have enough to answer comprehensively?
-    - When assessing research gaps: What specific information am I still missing?
-    - Before concluding research: Can I provide a complete answer now?
+    - Before starting work: What do I know? What skills and prior knowledge are available?
+    - After obtaining results: What did I learn? Does this change the approach?
+    - When choosing between options: What are the trade-offs? Which path is strongest?
+    - When stuck or failing: What went wrong? Is there a proven strategy to apply?
+    - Before concluding: Is the evidence sufficient? What does the next phase need from me?
 
-    Reflection should address:
-    1. Analysis of current findings - What concrete information have I gathered?
-    2. Gap assessment - What crucial information is still missing?
-    3. Quality evaluation - Do I have sufficient evidence/examples for a good answer?
-    4. Strategic decision - Should I continue searching or provide my answer?
-    5. Skill leverage - Is there a relevant local skill to load that can accelerate this work?
+    Your reflection should address the relevant dimensions below:
+
+    1. Progress — What has been accomplished? What concrete steps remain?
+    2. Evidence quality — Is the current evidence sufficient for the goal?
+       Would a critical reviewer accept it, or are there gaps to fill?
+    3. Skills leverage — Is there an installed skill that provides a structured
+       workflow for what I'm doing? Check your available skills listing and read
+       the relevant SKILL.md for full instructions. Skills cover various research
+       phases — ideation, experiment execution, paper writing, review, and more.
+       Follow a skill's workflow rather than improvising when one is available.
+    4. Prior knowledge — Have I checked research memory before starting?
+       `/memory/ideation-memory.md` records promising and failed research directions.
+       `/memory/experiment-memory.md` records proven strategies from past cycles.
+       Read these at the start of new work. After completing or failing a task,
+       consider whether the outcome should be recorded back into memory.
+       Skip this if the memory files do not exist yet.
+    5. Strategy — Should I continue the current approach, adjust it, or try
+       something different? What evidence supports this decision?
+    6. Handoff — Is this phase complete? What artifacts and results does the
+       next phase or the caller need? Am I leaving clear, well-organized outputs?
+
+    Not every reflection needs all six dimensions. Pick the ones relevant to
+    the current moment. A focused two or three dimension reflection is better
+    than a shallow pass over all six.
 
     Args:
-        reflection: Your detailed reflection on research progress, findings, gaps, and next steps
+        reflection: Your structured reflection addressing the relevant dimensions above
 
     Returns:
         Confirmation that reflection was recorded for decision-making

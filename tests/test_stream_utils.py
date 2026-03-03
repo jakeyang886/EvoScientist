@@ -146,14 +146,6 @@ class TestFormatToolCompact:
         result = format_tool_compact("task", {"other": "value"})
         assert result == "Cooking with sub-agent"
 
-    def test_load_skill(self):
-        result = format_tool_compact("load_skill", {"skill_name": "vllm"})
-        assert result == "load_skill(vllm)"
-
-    def test_load_skill_name_key(self):
-        result = format_tool_compact("load_skill", {"name": "peft"})
-        assert result == "load_skill(peft)"
-
     def test_tavily_search(self):
         result = format_tool_compact("tavily_search", {"query": "python testing"})
         assert result == "tavily_search(python testing)"
