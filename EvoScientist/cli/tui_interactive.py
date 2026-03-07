@@ -239,6 +239,13 @@ def run_textual_interactive(
         #prompt:focus {
             border: none;
         }
+        #queued-message {
+            display: none;
+            height: auto;
+            background: #11151b;
+            padding: 0 2;
+            color: #9ca3af;
+        }
         #completions {
             display: none;
             height: auto;
@@ -256,6 +263,8 @@ def run_textual_interactive(
         """
         BINDINGS = [
             Binding("ctrl+c", "request_quit", "Quit", show=False),
+            Binding("up", "edit_queued", show=False, priority=True),
+            Binding("escape", "cancel_queued", show=False, priority=True),
         ]
 
         def __init__(
@@ -281,6 +290,7 @@ def run_textual_interactive(
             self._started_channel_types: list[str] = []
             self._busy = False
             self._run_task: Any = None  # asyncio.Task for current _run_turn
+            self._queued_messages: list[str] = []  # queued messages to send after current turn
             self._comp_items: list[tuple[str, str]] = []
             self._comp_index: int = -1
 
@@ -293,6 +303,7 @@ def run_textual_interactive(
                 # _append_system, _mount_renderable, etc.
 
             with Container(id="input-shell"):
+                yield Static("", id="queued-message")
                 yield Static("", id="completions")
                 with Horizontal(id="input-row"):
                     yield Static(">", id="input-cursor")
@@ -838,18 +849,24 @@ def run_textual_interactive(
             """Handle a user turn: stream agent response with widgets."""
             self._busy = True
             self._render_status()
-
-            prompt = self.query_one("#prompt", Input)
-            prompt.disabled = True
+            cancelled = False
 
             try:
                 await self._stream_with_widgets(user_text)
+            except asyncio.CancelledError:
+                cancelled = True
+                self._append_system("Interrupted.", style="yellow")
             finally:
                 self._busy = False
                 self._run_task = None
                 self._render_status()
-                prompt.disabled = False
-                prompt.focus()
+                self.query_one("#prompt", Input).focus()
+
+            # Process next queued message (FIFO) — skip if interrupted
+            if not cancelled and self._queued_messages:
+                next_msg = self._queued_messages.pop(0)
+                self._render_queue_indicator()
+                self._run_task = asyncio.ensure_future(self._run_turn(next_msg))
 
         async def _process_channel_message(self, msg: ChannelMessage) -> None:
             """Process a channel message: stream agent response and reply.
@@ -962,10 +979,9 @@ def run_textual_interactive(
                 return
 
             if self._busy:
-                self._append_system(
-                    "A response is still streaming. Please wait.",
-                    style="yellow",
-                )
+                # Queue the message to send after current turn finishes
+                self._queued_messages.append(text)
+                self._render_queue_indicator()
                 return
 
             if text.startswith("/"):
@@ -995,6 +1011,38 @@ def run_textual_interactive(
                     comp_widget.display = True
                     return
             self._hide_completions()
+
+        def _render_queue_indicator(self) -> None:
+            """Render the queued messages indicator above the input."""
+            queued_w = self.query_one("#queued-message", Static)
+            if not self._queued_messages:
+                queued_w.display = False
+                return
+            parts: list[tuple[str, str]] = []
+            for msg in self._queued_messages:
+                preview = msg if len(msg) <= 60 else msg[:57] + "\u2026"
+                parts.append(("\u276f ", "bold"))
+                parts.append((preview, ""))
+                parts.append(("\n", ""))
+            parts.append(("  [press up to edit last \u00b7 esc to cancel last]", "dim italic"))
+            queued_w.update(Text.assemble(*parts))
+            queued_w.display = True
+
+        def action_cancel_queued(self) -> None:
+            """Cancel the last queued message on Esc."""
+            if self._queued_messages:
+                self._queued_messages.pop()
+                self._render_queue_indicator()
+
+        def action_edit_queued(self) -> None:
+            """Pop the last queued message back into input for editing."""
+            if self._queued_messages:
+                last = self._queued_messages.pop()
+                prompt = self.query_one("#prompt", Input)
+                prompt.value = last
+                prompt.cursor_position = len(prompt.value)
+                prompt.focus()
+                self._render_queue_indicator()
 
         def on_key(self, event: Any) -> None:
             comp_widget = self.query_one("#completions", Static)
@@ -1655,14 +1703,16 @@ def run_textual_interactive(
 
         def action_request_quit(self) -> None:
             if self._busy:
+                # Clear all queued messages on interrupt
+                if self._queued_messages:
+                    self._queued_messages.clear()
+                    self._render_queue_indicator()
                 if self._run_task is not None and not self._run_task.done():
                     self._run_task.cancel()
-                    self._append_system("Interrupted.", style="yellow")
                 else:
+                    # Edge case: busy but no task — force reset
                     self._busy = False
-                    prompt = self.query_one("#prompt", Input)
-                    prompt.disabled = False
-                    prompt.focus()
+                    self.query_one("#prompt", Input).focus()
                     self._render_status()
                     self._append_system("Interrupted.", style="yellow")
                 return
