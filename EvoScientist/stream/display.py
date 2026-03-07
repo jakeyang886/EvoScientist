@@ -353,6 +353,8 @@ def create_streaming_display(
     final_show_thinking: bool = False,
     final_thinking_max_length: int = DisplayLimits.THINKING_FINAL,
     response_markdown: Any = None,
+    total_input_tokens: int = 0,
+    total_output_tokens: int = 0,
 ) -> Any:
     """Create Rich display layout for streaming output.
 
@@ -524,6 +526,18 @@ def create_streaming_display(
             if clean_response:
                 elements.append(Text(""))  # blank separator
                 elements.append(response_markdown or Markdown(clean_response))
+
+        # Token usage stats (right-aligned)
+        if total_input_tokens or total_output_tokens:
+            stats = Text(justify="right")
+            stats.append("[", style="dim italic")
+            stats.append("Usage: ", style="dim italic")
+            stats.append(f"{total_input_tokens:,}", style="cyan italic")
+            stats.append(" in · ", style="dim italic")
+            stats.append(f"{total_output_tokens:,}", style="green italic")
+            stats.append(" out", style="dim italic")
+            stats.append("]", style="dim italic")
+            elements.append(stats)
     else:
         # Intermediate narration (tools still running) -- dim italic above Task List
         if latest_text and has_used_tools and not all_done:
@@ -647,6 +661,18 @@ def display_final_results(
             clean_response = clean_response.rstrip().removesuffix("...").rstrip()
         console.print()
         console.print(Markdown(clean_response or state.response_text))
+
+    # Token usage stats (right-aligned)
+    if state.total_input_tokens or state.total_output_tokens:
+        stats = Text(justify="right")
+        stats.append("[", style="dim italic")
+        stats.append("Usage: ", style="dim italic")
+        stats.append(f"{state.total_input_tokens:,}", style="cyan italic")
+        stats.append(" in · ", style="dim italic")
+        stats.append(f"{state.total_output_tokens:,}", style="green italic")
+        stats.append(" out", style="dim italic")
+        stats.append("]", style="dim italic")
+        console.print(stats)
 
 
 # ---------------------------------------------------------------------------

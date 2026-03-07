@@ -8,6 +8,7 @@ from .subagent_widget import SubAgentWidget
 from .todo_widget import TodoWidget
 from .user_message import UserMessage
 from .system_message import SystemMessage
+from .usage_widget import UsageWidget
 
 __all__ = [
     "LoadingWidget",
@@ -18,4 +19,5 @@ __all__ = [
     "TodoWidget",
     "UserMessage",
     "SystemMessage",
+    "UsageWidget",
 ]

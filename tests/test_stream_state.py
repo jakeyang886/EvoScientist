@@ -554,5 +554,42 @@ class TestParseTodoItemsAdvanced:
 
 
 # =============================================================================
+# Token usage tracking
+# =============================================================================
+
+class TestUsageStatsAccumulated:
+    def test_single_usage_event(self):
+        state = StreamState()
+        state.handle_event({"type": "usage_stats", "input_tokens": 100, "output_tokens": 50})
+        assert state.total_input_tokens == 100
+        assert state.total_output_tokens == 50
+
+    def test_multiple_usage_events_accumulate(self):
+        state = StreamState()
+        state.handle_event({"type": "usage_stats", "input_tokens": 100, "output_tokens": 50})
+        state.handle_event({"type": "usage_stats", "input_tokens": 200, "output_tokens": 80})
+        assert state.total_input_tokens == 300
+        assert state.total_output_tokens == 130
+
+    def test_usage_stats_in_display_args(self):
+        state = StreamState()
+        state.handle_event({"type": "usage_stats", "input_tokens": 500, "output_tokens": 200})
+        args = state.get_display_args()
+        assert args["total_input_tokens"] == 500
+        assert args["total_output_tokens"] == 200
+
+    def test_default_zero_tokens(self):
+        state = StreamState()
+        args = state.get_display_args()
+        assert args["total_input_tokens"] == 0
+        assert args["total_output_tokens"] == 0
+
+    def test_usage_stats_returns_event_type(self):
+        state = StreamState()
+        result = state.handle_event({"type": "usage_stats", "input_tokens": 10, "output_tokens": 5})
+        assert result == "usage_stats"
+
+
+# =============================================================================
 # ChannelState queue mechanism (removed — replaced by bus mode in channel.py)
 # =============================================================================

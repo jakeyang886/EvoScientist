@@ -92,6 +92,9 @@ class StreamState:
         self.todo_items: list[dict] = []
         # Latest text segment (reset on each tool_call)
         self.latest_text = ""
+        # Token usage tracking
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
         # Cached Markdown object for Rich CLI display (avoids O(n²) re-parsing)
         self._cached_md_text: str = ""
         self._cached_md: object | None = None
@@ -251,6 +254,10 @@ class StreamState:
                         sa.is_active = False
                         break
 
+        elif event_type == "usage_stats":
+            self.total_input_tokens += event.get("input_tokens", 0)
+            self.total_output_tokens += event.get("output_tokens", 0)
+
         elif event_type == "done":
             self.is_processing = False
             if not self.response_text:
@@ -278,6 +285,8 @@ class StreamState:
             "is_processing": self.is_processing,
             "subagents": self.subagents,
             "todo_items": self.todo_items,
+            "total_input_tokens": self.total_input_tokens,
+            "total_output_tokens": self.total_output_tokens,
         }
 
 

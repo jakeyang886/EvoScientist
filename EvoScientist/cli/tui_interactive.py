@@ -189,6 +189,7 @@ def run_textual_interactive(
             TodoWidget,
             UserMessage,
             SystemMessage,
+            UsageWidget,
         )
     except Exception as e:  # pragma: no cover - runtime fallback path
         raise RuntimeError(
@@ -790,6 +791,11 @@ def run_textual_interactive(
                                         lambda: container.scroll_end(animate=False),
                                     ),
                                 )
+                        # Mount token usage stats
+                        if state.total_input_tokens or state.total_output_tokens:
+                            await container.mount(
+                                UsageWidget(state.total_input_tokens, state.total_output_tokens)
+                            )
 
                     elif event_type == "error":
                         error_msg = event.get("message", "Unknown error")

@@ -89,6 +89,15 @@ class StreamEventEmitter:
         return StreamEvent("done", {"type": "done", "content": response, "response": response})
 
     @staticmethod
+    def usage_stats(input_tokens: int, output_tokens: int) -> StreamEvent:
+        """Token usage statistics event."""
+        return StreamEvent("usage_stats", {
+            "type": "usage_stats",
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+        })
+
+    @staticmethod
     def error(message: str) -> StreamEvent:
         """Error event."""
         return StreamEvent("error", {"type": "error", "message": message})

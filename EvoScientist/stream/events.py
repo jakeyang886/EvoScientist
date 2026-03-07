@@ -293,22 +293,38 @@ async def stream_agent_events(
         async for chunk in agent.astream(
             {"messages": [{"role": "user", "content": user_content}]},
             config=config,
-            stream_mode="messages",
+            stream_mode=["messages", "updates"],
             subgraphs=True,
         ):
-            # With subgraphs=True, event is (namespace, (message, metadata))
-            namespace: tuple = ()
-            data: Any = chunk
+            # Multi-mode + subgraphs: 3-tuple (namespace, mode, data)
+            # Single-mode + subgraphs: 2-tuple (namespace, data) — fallback
+            if not isinstance(chunk, tuple):
+                continue
 
-            if isinstance(chunk, tuple) and len(chunk) >= 2:
+            namespace: tuple = ()
+            data: Any
+            mode_str: str
+
+            if len(chunk) == 3:
+                namespace, mode_str, data = chunk
+                if not isinstance(namespace, tuple):
+                    namespace = ()
+            elif len(chunk) == 2:
                 first = chunk[0]
                 if isinstance(first, tuple):
-                    # (namespace_tuple, (message, metadata))
                     namespace = first
                     data = chunk[1]
                 else:
-                    # (message, metadata) -- no namespace
                     data = chunk
+                mode_str = "messages"
+            else:
+                continue
+
+            # Skip non-messages modes (updates, etc.)
+            if mode_str == "updates":
+                continue
+            if mode_str != "messages":
+                continue
 
             # Unpack message + metadata from data
             msg: Any
@@ -319,11 +335,24 @@ async def stream_agent_events(
             else:
                 msg = data
 
+            # Filter summarization middleware synthetic messages
+            if isinstance(metadata, dict) and metadata.get("lc_source") == "summarization":
+                continue
+
             subagent = _get_subagent_name(namespace, metadata)
             subagent_tracker = None
             if subagent:
                 tracker_key = _get_subagent_key(namespace, metadata) or str(namespace)
                 subagent_tracker = _subagent_trackers.setdefault(tracker_key, ToolCallTracker())
+
+            # Extract token usage from main-agent AIMessages
+            if isinstance(msg, (AIMessageChunk, AIMessage)) and not subagent:
+                usage = getattr(msg, "usage_metadata", None)
+                if usage:
+                    inp = usage.get("input_tokens", 0) if isinstance(usage, dict) else getattr(usage, "input_tokens", 0)
+                    out = usage.get("output_tokens", 0) if isinstance(usage, dict) else getattr(usage, "output_tokens", 0)
+                    if inp or out:
+                        yield emitter.usage_stats(inp, out).data
 
             # Process AIMessageChunk / AIMessage
             if isinstance(msg, (AIMessageChunk, AIMessage)):
