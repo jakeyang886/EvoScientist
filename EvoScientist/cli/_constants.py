@@ -5,14 +5,16 @@ from datetime import datetime, timezone
 from ..sessions import AGENT_NAME
 
 WELCOME_SLOGANS = [
-    "Ready for vibe research? What would you want cooking?",
+    "Ready for vibe research? What do you want cooking?",
     "Science doesn't sleep. Neither do your sub-agents.",
     "From hypothesis to paper — let's cook.",
     "Your research kitchen is ready. What's on the menu?",
     "Experiments don't run themselves. Oh wait — they do now.",
     "Drop a question. We'll bring the citations.",
-    "Vibe-driven discovery starts here.",
+    "Vibe first. Discovery follows.",
     "What breakthrough are we cooking today?",
+    "Harness the vibe. Start the research.",
+    "Ideas in. Discoveries out.",
 ]
 
 # ASCII art logo — shared by both Rich CLI and Textual TUI banners.
