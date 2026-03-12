@@ -22,7 +22,7 @@
 </picture></a><a href="https://github.com/EvoScientist/EvoScientist/blob/main/LICENSE"><picture>
   <source media="(prefers-color-scheme: light)" srcset=".github/assets/badge-license-light.svg">
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/badge-license-dark.svg">
-  <img alt="License MIT" src=".github/assets/badge-license-light.svg" height="28">
+  <img alt="License Apache 2.0" src=".github/assets/badge-license-light.svg" height="28">
 </picture></a>
 </div>
 
@@ -460,7 +460,7 @@ We welcome contributions from developers, researchers, and AI coding agents at a
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details.
 
 <p align="right"><a href="#top">🔝Back to top</a></p>
 

@@ -27,7 +27,7 @@
 </picture></a><a href="https://github.com/EvoScientist/EvoScientist/blob/main/LICENSE"><picture>
   <source media="(prefers-color-scheme: light)" srcset=".github/assets/badge-license-light.svg">
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/badge-license-dark.svg">
-  <img alt="License MIT" src=".github/assets/badge-license-light.svg" height="28">
+  <img alt="License Apache 2.0" src=".github/assets/badge-license-light.svg" height="28">
 </picture></a>
 </div>
 
@@ -471,7 +471,7 @@ Jan Piotrowski, Wiktor Cupiał, Jakub Kaliski, Jakub Filipiuk, Xinhao Yi, Shuyu 
 
 ## 📜 许可证
 
-本项目基于 MIT 许可证开源——详情请见 [LICENSE](./LICENSE) 文件。
+本项目基于 Apache License 2.0 开源——详情请见 [LICENSE](./LICENSE) 文件。
 
 <p align="right"><a href="#top">🔝回到顶部</a></p>
 
