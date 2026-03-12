@@ -357,7 +357,7 @@ EvoSci channel setup telegram
 Multiple channels can run concurrently — comma-separate names in the config:
 
 ```yaml
-channel_enabled: "telegram,discord,slack"
+channel_enabled: "telegram,slack,feishu,qq"
 ```
 
 The channel can also be started interactively with `/channel` in the CLI session.

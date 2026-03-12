@@ -367,7 +367,7 @@ EvoSci channel setup telegram
 多个渠道可同时运行——在配置中用逗号分隔：
 
 ```yaml
-channel_enabled: "telegram,discord,slack"
+channel_enabled: "telegram,slack,feishu,qq"
 ```
 
 也可以在 CLI 会话中通过 `/channel` 交互式启动渠道。
