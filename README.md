@@ -47,6 +47,12 @@ Moving beyond traditional human-in-the-loop systems, EvoScientist adopts a human
 <!-- <a href="https://github.com/EvoScientist/EvoScientist">
 <img width="100%" src="https://github.com/EvoScientist/EvoScientist/tree/main/.github/assets/EvoScientist_demo.gif?raw=true"></a> -->
 
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9" autoplay loop muted playsinline width="80%">
+    <a href="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9">View demo video</a>
+  </video>
+</div>
+
 ## ✨ Features
 - **🤖 Multi-Agent Team** — 6 sub-agents (plan, research, code, debug, analyze, write) working in concert.
 - **🧠 Persistent Memory** — Context, preferences, and findings survive across sessions.
