@@ -49,16 +49,25 @@
 它以开箱即用为设计理念，提供一个伴随智能体技能、工具集和记忆库共同成长的活跃研究系统。
 EvoScientist 超越了传统的人在回路（Human-in-the-Loop）模式，采用人在环上（Human-on-the-Loop）范式——AI 作为研究伙伴，与人类研究者共同进化，逐步内化学术品味与科学判断力。**
 
-<!-- <h3>统一控制，多种界面</h3>
-[TODO: 添加 Demo 以展示不同界面（TUI、移动端）及其如何连接到同一底层代理系统。] -->
-<!-- <a href="https://github.com/EvoScientist/EvoScientist">
-<img width="100%" src="https://github.com/EvoScientist/EvoScientist/tree/main/.github/assets/EvoScientist_demo.gif?raw=true"></a> -->
+<h3>统一入口，多端体验</h3>
 
-<div align="center">
-  <video src="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9" autoplay loop muted playsinline width="80%">
-    <a href="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9">观看演示视频</a>
-  </video>
-</div>
+<!-- 准备好后替换 VIDEO_URL_MOBILE -->
+<table>
+  <tr>
+    <th width="65%"><p align="center">🖥️ CLI / TUI</p></th>
+    <th width="35%"><p align="center">📱 移动端</p></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <video src="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9" autoplay loop muted playsinline width="100%">
+        <a href="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9">观看演示视频</a>
+      </video>
+    </td>
+    <td align="center">
+      <video src="VIDEO_URL_MOBILE" width="240" autoplay loop muted playsinline></video>
+    </td>
+  </tr>
+</table>
 
 ## ✨ 特性
 

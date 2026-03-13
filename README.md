@@ -42,16 +42,25 @@
 It is designed to be opinionated and ready to use out of the box, offering a living research system that grows alongside evolving agent skills, toolsets, and memory bases.
 Moving beyond traditional human-in-the-loop systems, EvoScientist adopts a human-on-the-loop paradigm, where AI acts as a research buddy that co-evolves with human researchers and internalizes scholarly taste and scientific judgment.**
 
-<!-- <h3>Unified Control, Different Surfaces</h3>
-[TODO: Add a Demo to demonstrate the different interfaces (TUI, mobile) and how they connect to the same underlying proxy system.] -->
-<!-- <a href="https://github.com/EvoScientist/EvoScientist">
-<img width="100%" src="https://github.com/EvoScientist/EvoScientist/tree/main/.github/assets/EvoScientist_demo.gif?raw=true"></a> -->
+<h3>Unified Control, Different Surfaces</h3>
 
-<div align="center">
-  <video src="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9" autoplay loop muted playsinline width="80%">
-    <a href="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9">View demo video</a>
-  </video>
-</div>
+<!-- Replace VIDEO_URL_MOBILE when ready -->
+<table>
+  <tr>
+    <th width="65%"><p align="center">🖥️ CLI / TUI</p></th>
+    <th width="35%"><p align="center">📱 Mobile</p></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <video src="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9" autoplay loop muted playsinline width="100%">
+        <a href="https://github.com/user-attachments/assets/a40ba429-bb07-4663-b5b1-77aed1a833b9">View demo video</a>
+      </video>
+    </td>
+    <td align="center">
+      <video src="VIDEO_URL_MOBILE" width="240" autoplay loop muted playsinline></video>
+    </td>
+  </tr>
+</table>
 
 ## ✨ Features
 - **🤖 Multi-Agent Team** — 6 sub-agents (plan, research, code, debug, analyze, write) working in concert.
