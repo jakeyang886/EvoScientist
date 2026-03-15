@@ -47,25 +47,19 @@ Moving beyond traditional human-in-the-loop systems, EvoScientist adopts a human
 <table>
   <tr>
     <td align="center" valign="top" width="33%">
-      <img src=".github/assets/ICAIS_awards.JPG" width="100%" style="max-height:200px; object-fit:cover;" alt="ICAIS 2025 Awards"/>
+      <img src=".github/assets/ICAIS_awards.JPG" height="180" alt="ICAIS 2025 Awards"/>
       <br />
-      <sub><b>Best Paper & AI Reviewer's Appraisal Award</b></sub>
-      <br />
-      <sub>ICAIS 2025 · AI Scientist Track · 6/6 Accepted</sub>
+      <sub><b>ICAIS 2025 — Best Paper & Appraisal Award</b></sub>
     </td>
     <td align="center" valign="top" width="33%">
-      <img src=".github/assets/ICAIS_best_paper.png" width="100%" style="max-height:200px; object-fit:cover;" alt="Best Paper"/>
+      <img src=".github/assets/ICAIS_best_paper.png" height="180" alt="Best Paper"/>
       <br />
-      <sub><b>Best Paper — ICAIS 2025</b></sub>
-      <br />
-      <sub>Adaptive Evidential Meta-Learning with Hyper-Conditioned Priors</sub>
+      <sub><b>AI-Generated Best Paper</b></sub>
     </td>
     <td align="center" valign="top" width="33%">
-      <img src=".github/assets/deepresearch_bench_2.JPG" width="100%" style="max-height:200px; object-fit:cover;" alt="DeepResearch Bench II #1"/>
+      <img src=".github/assets/deepresearch_bench_2.JPG" height="180" alt="DeepResearch Bench II #1"/>
       <br />
       <sub><b>#1 on DeepResearch Bench II</b></sub>
-      <br />
-      <sub>Ranked first at time of submission</sub>
     </td>
   </tr>
 </table>
