@@ -771,15 +771,40 @@ class TestAutoConfig:
         assert call_kwargs["thinking"] == custom_thinking
 
     @patch("EvoScientist.llm.models.init_chat_model")
-    def test_openai_reasoning(self, mock_init, monkeypatch):
-        """Native OpenAI models get auto-reasoning."""
+    def test_openai_reasoning_xhigh(self, mock_init, monkeypatch):
+        """gpt-5.4+ and codex models get xhigh reasoning."""
+        mock_init.return_value = "mock_model"
+        monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
+
+        get_chat_model("gpt-5.4", provider="openai")
+        assert mock_init.call_args[1]["reasoning"] == {
+            "effort": "xhigh",
+            "summary": "auto",
+        }
+
+        get_chat_model("gpt-5.3-codex", provider="openai")
+        assert mock_init.call_args[1]["reasoning"] == {
+            "effort": "xhigh",
+            "summary": "auto",
+        }
+
+    @patch("EvoScientist.llm.models.init_chat_model")
+    def test_openai_reasoning_high_fallback(self, mock_init, monkeypatch):
+        """Other OpenAI models get high reasoning effort."""
         mock_init.return_value = "mock_model"
         monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
 
         get_chat_model("gpt-5-nano")
+        assert mock_init.call_args[1]["reasoning"] == {
+            "effort": "high",
+            "summary": "auto",
+        }
 
-        call_kwargs = mock_init.call_args[1]
-        assert call_kwargs["reasoning"] == {"effort": "high", "summary": "auto"}
+        get_chat_model("gpt-5.2", provider="openai")
+        assert mock_init.call_args[1]["reasoning"] == {
+            "effort": "high",
+            "summary": "auto",
+        }
 
     @patch("EvoScientist.llm.models.init_chat_model")
     def test_openai_base_url_override(self, mock_init, monkeypatch):
