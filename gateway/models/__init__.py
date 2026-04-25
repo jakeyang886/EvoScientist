@@ -1,0 +1,1 @@
+"""Gateway Pydantic models — request/response schemas."""

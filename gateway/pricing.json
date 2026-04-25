@@ -1,0 +1,71 @@
+{
+  "version": 8,
+  "updated_at": "2026-04-24T15:47:11.488704+00:00",
+  "updated_by": "9872b5c2-7f0b-4f7e-a6db-8e2dc7321011",
+  "token_pricing": {
+    "price_per_million_tokens": 2.0,
+    "currency": "CNY"
+  },
+  "plans": {
+    "starter": {
+      "label": "入门版",
+      "billing_mode": "pay_as_you_go",
+      "initial_tokens": 100000,
+      "price_per_million": 2.0,
+      "monthly_fee": null,
+      "default_days": null,
+      "rate_limits": {
+        "tokens_per_minute": 1000000,
+        "tokens_per_day": 20000000,
+        "requests_per_5h": 1000,
+        "requests_per_week": 100000
+      },
+      "max_concurrent_threads": 3
+    },
+    "pro": {
+      "label": "专业版",
+      "billing_mode": "subscription",
+      "initial_tokens": null,
+      "price_per_million": null,
+      "monthly_fee": 99.0,
+      "default_days": 30,
+      "rate_limits": {
+        "tokens_per_minute": 200000,
+        "tokens_per_day": 5000000,
+        "requests_per_5h": 1000,
+        "requests_per_week": 10000
+      },
+      "max_concurrent_threads": 3
+    },
+    "max": {
+      "label": "旗舰版",
+      "billing_mode": "subscription",
+      "initial_tokens": null,
+      "price_per_million": null,
+      "monthly_fee": 199.0,
+      "default_days": 30,
+      "rate_limits": {
+        "tokens_per_minute": 500000,
+        "tokens_per_day": 10000000,
+        "requests_per_5h": 3000,
+        "requests_per_week": 30000
+      },
+      "max_concurrent_threads": 5
+    },
+    "ultra": {
+      "label": "至尊版",
+      "billing_mode": "subscription",
+      "initial_tokens": null,
+      "price_per_million": null,
+      "monthly_fee": 399.0,
+      "default_days": 30,
+      "rate_limits": {
+        "tokens_per_minute": null,
+        "tokens_per_day": null,
+        "requests_per_5h": null,
+        "requests_per_week": null
+      },
+      "max_concurrent_threads": 10
+    }
+  }
+}
