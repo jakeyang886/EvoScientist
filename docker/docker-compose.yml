@@ -8,13 +8,13 @@ services:
     ports:
       - "8065:8065"
     env_file:
-      - ../.env
+      - .env
     environment:
-      - CORS_ORIGINS=http://localhost:3065,http://frontend:3065
+      - CORS_ORIGINS=http://localhost:3065,http://127.0.0.1:3065,http://frontend:3065
       - GATEWAY_HOST=0.0.0.0
       - GATEWAY_PORT=8065
     volumes:
-      - evoscientist_data:/root/.config/evoscientist
+      - ./data:/root/.config/evoscientist
     restart: unless-stopped
 
   frontend:
@@ -25,10 +25,9 @@ services:
     ports:
       - "3065:3065"
     environment:
+      - PORT=3065
       - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8065
     depends_on:
       - backend
     restart: unless-stopped
 
-volumes:
-  evoscientist_data:

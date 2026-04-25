@@ -45,3 +45,6 @@ conversation_history/
 *meals/
 botpy.log
 large_tool_results/
+
+# Docker runtime data
+docker/data/
