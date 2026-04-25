@@ -10,6 +10,7 @@ from pathlib import Path
 CONFIG_DIR = Path("/root/.config/evoscientist")
 CONFIG_PATH = CONFIG_DIR / "config.yaml"
 SESSIONS_DB = CONFIG_DIR / "sessions.db"
+GATEWAY_DB = CONFIG_DIR / "gateway.db"
 
 # Map env vars to config.yaml keys
 ENV_TO_CONFIG = {
@@ -113,8 +114,50 @@ def init_sessions_db():
     print(f"[entrypoint] sessions.db initialized with checkpoints table")
 
 
+def init_admin():
+    """Create default super admin if no admin exists."""
+    if not GATEWAY_DB.exists():
+        print(f"[entrypoint] gateway.db not yet created, skipping admin init")
+        return
+
+    username = os.getenv("ADMIN_USERNAME", "admin")
+    password = os.getenv("ADMIN_PASSWORD", "admin123")
+    email = os.getenv("ADMIN_EMAIL", "admin@evoscientist.local")
+
+    conn = sqlite3.connect(str(GATEWAY_DB))
+    try:
+        # Check if any admin already exists
+        cursor = conn.execute("SELECT id FROM admins LIMIT 1")
+        if cursor.fetchone():
+            print(f"[entrypoint] admin user already exists, skipping")
+            return
+
+        import bcrypt
+        import uuid
+
+        uid = uuid.uuid4().hex[:8]
+        pw = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(12)).decode()
+
+        conn.execute(
+            """INSERT INTO users (uid, username, email, password, role, email_verified, plan, status)
+               VALUES (?, ?, ?, ?, 'admin', 1, 'ultra', 'active')""",
+            (uid, username, email, pw),
+        )
+        conn.execute(
+            "INSERT INTO admins (uid, username, email, password) VALUES (?, ?, ?, ?)",
+            (uid, username, email, pw),
+        )
+        conn.commit()
+        print(f"[entrypoint] super admin created: {username} / {email}")
+    except Exception as e:
+        print(f"[entrypoint] admin creation skipped: {e}")
+    finally:
+        conn.close()
+
+
 if __name__ == "__main__":
     init_config()
     init_sessions_db()
+    init_admin()
     # Run the main command
     os.execvp(sys.argv[1], sys.argv[1:])
