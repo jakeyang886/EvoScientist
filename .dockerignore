@@ -1,0 +1,52 @@
+# Git
+.git
+.gitignore
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE / Tools
+.vscode/
+.idea/
+.agents/
+.claude/
+.cursor/
+.codex/
+.cursorrules
+
+# Project
+workspace/
+skills/
+memory/
+media/
+conversation_history/
+.large_tool_results/
+node_modules/
+.large_tool_results/
+tests/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+docs/
+*.md
+!README.md

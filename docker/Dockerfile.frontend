@@ -1,0 +1,39 @@
+# ─── Build Stage ──────────────────────────────────────────────
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+# Copy dependency files first (layer caching)
+# Context is project root, so paths are prefixed with frontend/
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source and build
+COPY frontend/ ./
+RUN pnpm build
+
+# ─── Production Stage ─────────────────────────────────────────
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+ENV NODE_ENV=production
+
+# Copy built artifacts from builder
+COPY --from=builder /app/.next         ./.next
+COPY --from=builder /app/public        ./public
+COPY --from=builder /app/node_modules  ./node_modules
+COPY --from=builder /app/package.json  ./
+COPY --from=builder /app/next.config.ts ./
+
+EXPOSE 3065
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3065/ || exit 1
+
+CMD ["pnpm", "start"]

@@ -1,0 +1,34 @@
+services:
+
+  backend:
+    image: ghcr.io/evoscientist/evoscientist-backend:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8065:8065"
+    env_file:
+      - ../.env
+    environment:
+      - CORS_ORIGINS=http://localhost:3065,http://frontend:3065
+      - GATEWAY_HOST=0.0.0.0
+      - GATEWAY_PORT=8065
+    volumes:
+      - evoscientist_data:/root/.config/evoscientist
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/evoscientist/evoscientist-frontend:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3065:3065"
+    environment:
+      - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8065
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  evoscientist_data:
