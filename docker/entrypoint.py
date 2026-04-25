@@ -115,22 +115,53 @@ def init_sessions_db():
 
 
 def init_admin():
-    """Create default super admin if no admin exists."""
-    if not GATEWAY_DB.exists():
-        print(f"[entrypoint] gateway.db not yet created, skipping admin init")
-        return
+    """Create default super admin if no admin exists.
 
-    username = os.getenv("ADMIN_USERNAME", "admin")
-    password = os.getenv("ADMIN_PASSWORD", "admin123")
-    email = os.getenv("ADMIN_EMAIL", "admin@evoscientist.local")
-
+    Creates the users and admins tables if gateway.db doesn't have them yet
+    (they are normally created by FastAPI's init_db on startup).
+    Skips if any admin already exists (idempotent).
+    """
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(GATEWAY_DB))
     try:
+        # Ensure tables exist (in case entrypoint runs before FastAPI init_db)
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS users (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                uid             TEXT UNIQUE NOT NULL,
+                username        TEXT UNIQUE NOT NULL,
+                email           TEXT UNIQUE NOT NULL,
+                password        TEXT NOT NULL,
+                avatar_url      TEXT,
+                plan            TEXT DEFAULT 'starter',
+                status          TEXT DEFAULT 'active',
+                role            TEXT DEFAULT 'user' NOT NULL,
+                email_verified  BOOLEAN DEFAULT FALSE,
+                created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS admins (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                uid         TEXT UNIQUE NOT NULL,
+                username    TEXT UNIQUE NOT NULL,
+                email       TEXT UNIQUE NOT NULL,
+                password    TEXT NOT NULL,
+                status      TEXT DEFAULT 'active',
+                created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """)
+        conn.commit()
+
         # Check if any admin already exists
         cursor = conn.execute("SELECT id FROM admins LIMIT 1")
         if cursor.fetchone():
             print(f"[entrypoint] admin user already exists, skipping")
             return
+
+        username = os.getenv("ADMIN_USERNAME", "admin")
+        password = os.getenv("ADMIN_PASSWORD", "admin123")
+        email = os.getenv("ADMIN_EMAIL", "admin@evoscientist.local")
 
         import bcrypt
         import uuid
