@@ -27,6 +27,7 @@ COPY --from=builder /app/.venv /app/.venv
 # Copy application code
 COPY EvoScientist/ ./EvoScientist/
 COPY gateway/ ./gateway/
+COPY docker/entrypoint.py ./entrypoint.py
 
 # Ensure runtime uses the project venv
 ENV PATH="/app/.venv/bin:$PATH" \
@@ -37,4 +38,5 @@ EXPOSE 8065
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD curl -sf http://localhost:8065/health || exit 1
 
+ENTRYPOINT ["python3", "entrypoint.py"]
 CMD ["uvicorn", "gateway.main:app", "--host", "0.0.0.0", "--port", "8065"]
