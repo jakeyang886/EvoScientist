@@ -19,7 +19,7 @@ from fastapi.responses import JSONResponse
 from gateway.database import close_gateway_db, get_connection, init_gateway_db
 from gateway.middleware.auth import AuthMiddleware
 from gateway.middleware.admin_auth import AdminAuthMiddleware
-from gateway.routes import auth, endpoint_stats, global_uploads, hitl, models, threads, uploads, users
+from gateway.routes import auth, endpoint_stats, global_uploads, hitl, models, suggestions, threads, uploads, users
 from gateway.routes.admin import router as admin_router
 from gateway.routes.admin_auth import router as admin_auth_router
 from gateway.routes.files import router as files_router
@@ -287,6 +287,8 @@ app.include_router(files_router)
 app.include_router(hitl.router)
 app.include_router(models.router)
 app.include_router(users.router)
+app.include_router(suggestions.router)
+app.include_router(suggestions.admin_router)
 app.include_router(admin_auth_router)
 app.include_router(admin_router)
 app.include_router(endpoint_stats.router)

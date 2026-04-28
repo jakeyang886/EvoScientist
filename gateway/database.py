@@ -232,6 +232,29 @@ SCHEMA_STATEMENTS: list[str] = [
         created_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
     )
     """,
+    # User suggestions / feedback
+    """
+    CREATE TABLE IF NOT EXISTS suggestions (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        title           TEXT NOT NULL,
+        content         TEXT NOT NULL,
+        status          TEXT NOT NULL DEFAULT 'open',
+        created_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+        updated_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS suggestion_attachments (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        suggestion_id   INTEGER NOT NULL REFERENCES suggestions(id) ON DELETE CASCADE,
+        filename        TEXT NOT NULL,
+        stored_name     TEXT NOT NULL,
+        mime_type       TEXT,
+        size            INTEGER NOT NULL DEFAULT 0,
+        created_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+    )
+    """,
     # Indexes
     "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
     "CREATE INDEX IF NOT EXISTS idx_users_uid ON users(uid)",
@@ -251,6 +274,9 @@ SCHEMA_STATEMENTS: list[str] = [
     "CREATE INDEX IF NOT EXISTS idx_user_balances_plan ON user_balances(plan)",
     "CREATE INDEX IF NOT EXISTS idx_recharge_records_user ON recharge_records(user_id, created_at DESC)",
     "CREATE INDEX IF NOT EXISTS idx_recharge_records_operator ON recharge_records(operator_id)",
+    "CREATE INDEX IF NOT EXISTS idx_suggestions_user_created ON suggestions(user_id, created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS idx_suggestions_status ON suggestions(status, created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS idx_suggestion_attachments_suggestion ON suggestion_attachments(suggestion_id)",
     "CREATE INDEX IF NOT EXISTS idx_admins_email ON admins(email)",
     "CREATE INDEX IF NOT EXISTS idx_admins_uid ON admins(uid)",
 ]
@@ -302,6 +328,7 @@ _MIGRATIONS: dict[int, tuple[str, str]] = {
     8: ("V8", "Create admins table, migrate admin users from users, add recharge_records.admin_uid"),
     9: ("V9", "Add endpoint + provider columns to token_usage_log for per-endpoint usage tracking"),
     10: ("V10", "Create endpoint_usage_daily aggregation table for fast endpoint stats queries"),
+    11: ("V11", "Create suggestions and suggestion_attachments tables"),
 }
 
 
@@ -519,8 +546,31 @@ async def _execute_migration(conn: aiosqlite.Connection, version: int) -> None:
             logger.warning("V10: backfill skipped (%s)", e)
 
     elif version == 11:
-        # Placeholder for future migration
-        pass
+        await conn.execute("""
+            CREATE TABLE IF NOT EXISTS suggestions (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                title           TEXT NOT NULL,
+                content         TEXT NOT NULL,
+                status          TEXT NOT NULL DEFAULT 'open',
+                created_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                updated_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+        """)
+        await conn.execute("""
+            CREATE TABLE IF NOT EXISTS suggestion_attachments (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                suggestion_id   INTEGER NOT NULL REFERENCES suggestions(id) ON DELETE CASCADE,
+                filename        TEXT NOT NULL,
+                stored_name     TEXT NOT NULL,
+                mime_type       TEXT,
+                size            INTEGER NOT NULL DEFAULT 0,
+                created_at      TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+        """)
+        await conn.execute("CREATE INDEX IF NOT EXISTS idx_suggestions_user_created ON suggestions(user_id, created_at DESC)")
+        await conn.execute("CREATE INDEX IF NOT EXISTS idx_suggestions_status ON suggestions(status, created_at DESC)")
+        await conn.execute("CREATE INDEX IF NOT EXISTS idx_suggestion_attachments_suggestion ON suggestion_attachments(suggestion_id)")
 
 
 async def close_gateway_db() -> None:

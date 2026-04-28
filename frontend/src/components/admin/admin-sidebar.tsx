@@ -18,6 +18,7 @@ import {
   TrendingUp,
   Zap,
   Server,
+  MessageSquareText,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { href: "/admin/consumption", labelKey: "admin.nav.consumption", icon: TrendingUp },
   { href: "/admin/token-stats", labelKey: "admin.nav.tokenStats", icon: Zap },
   { href: "/admin/endpoints", labelKey: "admin.nav.endpoints", icon: Server },
+  { href: "/admin/suggestions", labelKey: "admin.nav.suggestions", icon: MessageSquareText },
   { href: "/admin/stats", labelKey: "admin.nav.stats", icon: BarChart3 },
   { href: "/admin/llm-settings", labelKey: "admin.nav.llmSettings", icon: Bot },
   { href: "/admin/settings", labelKey: "admin.nav.settings", icon: Settings },

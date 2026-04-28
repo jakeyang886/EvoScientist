@@ -315,6 +315,46 @@ export const usersApi = {
     }),
 };
 
+// ─── Suggestions API ──────────────────────────────────────────
+
+export interface SuggestionAttachment {
+  id: number;
+  filename: string;
+  mime_type: string | null;
+  size: number;
+  created_at: string;
+  download_url?: string;
+}
+
+export interface AdminSuggestion {
+  id: number;
+  title: string;
+  content: string;
+  status: "open" | "reviewing" | "resolved" | "closed";
+  created_at: string;
+  updated_at: string;
+  user: {
+    uid: string;
+    username: string;
+    email: string;
+  };
+  attachments: SuggestionAttachment[];
+}
+
+export const suggestionsApi = {
+  create: (body: { title: string; content: string; files?: File[] }) => {
+    const formData = new FormData();
+    formData.append("title", body.title);
+    formData.append("content", body.content);
+    body.files?.forEach((file) => formData.append("files", file));
+    return apiFetch<{ id: number; ok: boolean }>(`${BASE}/suggestions`, {
+      method: "POST",
+      body: formData,
+      headers: {},
+    });
+  },
+};
+
 // ─── Uploads API ──────────────────────────────────────────────
 
 export interface UploadedFile {
@@ -626,6 +666,29 @@ export interface AdminLlmSettings {
   providers: Record<string, AdminLlmProviderConfig>;
 }
 
+async function downloadAdminFile(path: string, filename: string): Promise<void> {
+  const gatewayUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
+  const url = gatewayUrl ? `${gatewayUrl}${path}` : path;
+  const headers: Record<string, string> = {};
+  const adminTokens = getAdminTokens();
+  if (adminTokens?.access_token) {
+    headers.Authorization = `Bearer ${adminTokens.access_token}`;
+  }
+  const response = await fetch(url, { headers });
+  if (!response.ok) {
+    throw new ApiError(response.statusText, response.status);
+  }
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = objectUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(objectUrl);
+}
+
 export const adminApi = {
   users: (params?: { q?: string; plan?: string; status?: string; page?: number; size?: number }) =>
     adminApiFetch<PaginatedResponse<AdminUser>>(`${BASE}/admin/users`, { params: params as Record<string, string> }),
@@ -748,4 +811,13 @@ export const adminApi = {
     }>(`${BASE}/admin/endpoints/history?${new URLSearchParams(
       Object.entries(params).filter(([_, v]) => v != null).map(([k, v]) => [k, v!])
     ).toString()}`),
+  suggestions: (params?: { q?: string; status?: string; page?: number; size?: number }) =>
+    adminApiFetch<PaginatedResponse<AdminSuggestion>>(`${BASE}/admin/suggestions`, { params: params as Record<string, string> }),
+  updateSuggestionStatus: (id: number, status: AdminSuggestion["status"]) =>
+    adminApiFetch<{ ok: boolean; status: string }>(`${BASE}/admin/suggestions/${id}`, {
+      method: "PATCH",
+      body: { status },
+    }),
+  downloadSuggestionAttachment: (id: number, filename: string) =>
+    downloadAdminFile(`${BASE}/admin/suggestions/attachments/${id}`, filename),
 };

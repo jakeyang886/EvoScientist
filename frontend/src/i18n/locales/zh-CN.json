@@ -97,6 +97,18 @@
     "approve": "批准",
     "deny": "拒绝"
   },
+  "suggestions": {
+    "title": "提交修改意见",
+    "subject": "标题",
+    "subjectPlaceholder": "简要描述问题或建议",
+    "content": "意见内容",
+    "contentPlaceholder": "请说明希望修改的内容、复现步骤或期望效果...",
+    "attach": "添加图片或文件",
+    "submit": "提交意见",
+    "required": "请填写标题和内容",
+    "submitted": "修改意见已提交",
+    "submitFailed": "提交失败，请稍后重试"
+  },
   "agents": {
     "title": "Agents",
     "subtitle": "选择或探索可用的 AI 助手"
@@ -113,6 +125,7 @@
       "consumption": "消费统计",
       "tokenStats": "Token 统计",
       "endpoints": "Endpoint 统计",
+      "suggestions": "修改意见",
       "stats": "数据统计",
       "llmSettings": "大模型配置",
       "settings": "系统设置",
@@ -168,6 +181,26 @@
     "forceLogout": {
       "success": "用户已登出",
       "failed": "强制登出失败"
+    },
+    "suggestions": {
+      "title": "修改意见",
+      "total": "共 {count} 条意见",
+      "search": "搜索标题、内容或用户...",
+      "allStatus": "全部状态",
+      "loading": "加载意见中...",
+      "loadFailed": "加载意见失败",
+      "noData": "暂无修改意见",
+      "refresh": "刷新",
+      "prev": "上一页",
+      "next": "下一页",
+      "statusSaved": "状态已更新",
+      "statusFailed": "更新状态失败",
+      "status": {
+        "open": "待处理",
+        "reviewing": "处理中",
+        "resolved": "已解决",
+        "closed": "已关闭"
+      }
     },
     "threads": {
       "title": "活跃线程",

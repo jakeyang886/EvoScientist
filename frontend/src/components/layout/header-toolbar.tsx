@@ -2,19 +2,25 @@
 
 import { useTheme } from "@/providers/theme-provider";
 import { useTranslation } from "react-i18next";
-import { Sun, Moon, Monitor, Languages } from "lucide-react";
+import { Sun, Moon, Monitor, Languages, MessageSquarePlus } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { SuggestionDialog } from "@/components/suggestions/suggestion-dialog";
 
 const LANGUAGES = [
   { value: "zh-CN", label: "简体中文", short: "中" },
   { value: "en-US", label: "English", short: "EN" },
 ];
 
-export function HeaderToolbar() {
+interface HeaderToolbarProps {
+  showFeedback?: boolean;
+}
+
+export function HeaderToolbar({ showFeedback = true }: HeaderToolbarProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const { i18n, t } = useTranslation();
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const themeRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +50,23 @@ export function HeaderToolbar() {
 
   return (
     <div className="flex items-center gap-1">
+      {showFeedback && (
+        <>
+          <button
+            onClick={() => {
+              setFeedbackOpen(true);
+              setLangOpen(false);
+              setThemeOpen(false);
+            }}
+            className="flex items-center gap-1 px-2 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
+            title={t("suggestions.title")}
+          >
+            <MessageSquarePlus className="w-3.5 h-3.5" />
+          </button>
+          <SuggestionDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
+        </>
+      )}
+
       {/* Language Switcher */}
       <div ref={langRef} className="relative">
         <button

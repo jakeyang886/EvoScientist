@@ -97,6 +97,18 @@
     "approve": "Approve",
     "deny": "Deny"
   },
+  "suggestions": {
+    "title": "Submit Feedback",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe the issue or suggestion",
+    "content": "Details",
+    "contentPlaceholder": "Describe what should change, steps to reproduce, or the expected result...",
+    "attach": "Add images or files",
+    "submit": "Submit",
+    "required": "Please enter a subject and details",
+    "submitted": "Feedback submitted",
+    "submitFailed": "Failed to submit. Please try again later"
+  },
   "agents": {
     "title": "Agents",
     "subtitle": "Choose or explore available AI assistants"
@@ -113,6 +125,7 @@
       "consumption": "Consumption",
       "tokenStats": "Token Stats",
       "endpoints": "Endpoints",
+      "suggestions": "Feedback",
       "stats": "Statistics",
       "llmSettings": "LLM Settings",
       "settings": "Settings",
@@ -168,6 +181,26 @@
     "forceLogout": {
       "success": "User logged out",
       "failed": "Failed to force logout"
+    },
+    "suggestions": {
+      "title": "Feedback",
+      "total": "{count} feedback item(s)",
+      "search": "Search title, details, or user...",
+      "allStatus": "All Status",
+      "loading": "Loading feedback...",
+      "loadFailed": "Failed to load feedback",
+      "noData": "No feedback yet",
+      "refresh": "Refresh",
+      "prev": "Previous",
+      "next": "Next",
+      "statusSaved": "Status updated",
+      "statusFailed": "Failed to update status",
+      "status": {
+        "open": "Open",
+        "reviewing": "Reviewing",
+        "resolved": "Resolved",
+        "closed": "Closed"
+      }
     },
     "threads": {
       "title": "Active Threads",

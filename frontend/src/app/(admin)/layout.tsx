@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Admin top header with language & theme controls */}
         <header className="flex items-center justify-between h-12 px-4 border-b bg-background/80 backdrop-blur-sm shrink-0">
           <div />
-          <HeaderToolbar />
+          <HeaderToolbar showFeedback={false} />
         </header>
         <main className="flex-1 overflow-auto">{children}</main>
       </div>
